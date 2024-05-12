@@ -22,5 +22,9 @@ RUN service apache2 start
 MAINTAINER Pooja Choudhary<er.poojach@gmail.com>
 COPY index.html /var/www/html/index.html
 
+
+
+##we have created Dockerfile.  Now we need to execute the Dockerfile by creating custom image.
+
 MAINTAINER pooja<er.poojach@gmail.com>
 COPY file1.txt /tmp/file1.txt
