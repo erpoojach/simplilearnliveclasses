@@ -1,0 +1,69 @@
+## To see the list of the images present in the local registry 
+
+> docker images 
+
+## i want to create a container with ubuntu as a base image
+
+> docker run -it --name c01 ubuntu /bin/bash 
+  # you will enter inside the container
+  touch file1
+   apt update -y
+  apt install apache2 -y
+  which apache2
+  ls
+ 
+## to come out of the container press ctrl p and ctrl q 
+
+
+## to see the list of all the running containers
+docker ps 
+
+
+(you can also use docker ps -a to show the list of all the containers)
+
+
+
+## to enter inside the container 
+
+docker exec -it c01 /bin/bash
+
+####Ques: docker stop containername will stop the container...can we enter inside a stopped container?
+  Sol:
+
+  docker stop c01
+  docker ps -a
+   docker exec -it c01 /bin/bash  
+    # you will get error message
+  docker start c01
+   docker exec -it c01 /bin/bash  
+
+you will be able to enter inside container....
+ctrl p and ctrl q to come out of the container
+
+
+################
+
+### We can create another container but you cannot create two containers with same name
+
+
+> docker run -it --name c02 ubuntu /bin/bash
+
+press ctrl p and ctrl q to come out of container
+
+
+## Everytime we are entering the container..suppose i want to create a container but i dont want to enter inside the container?
+
+
+
+docker run -dt --name c04 ubuntu 
+
+docker ps
+
+
+### to remove a container
+
+docker rm c01
+
+## to remove an image
+
+docker rmi ubuntu
