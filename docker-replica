@@ -1,0 +1,17 @@
+sudo su 
+#lets suppose we have a container named 12maycon1 and we want to create replica of the container how we need to do it?
+
+##lets first create that 12maycon1 
+docker run -it --name 12maycon1 ubuntu /bin/bash
+touch file1 file2 file3
+exit
+## lets now create a custom image of 12maycon1 which woudl be like a blueprint of the 12maycon1
+
+  docker commit 12maycon1 motherdayimg
+
+  #### lets create a new container from motherdayimg which would be read replica of container 12maycon1
+
+  docker run -it --name myslclass motherdayimg /bin/bash
+  ls 
+  (you will see file1 file2 file3)
+  exit
