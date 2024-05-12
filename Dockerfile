@@ -16,7 +16,7 @@
 
 ## one directory have one docker file with name Dockerfile  (D capital)
 FROM ubuntu
-RUN apt update -Y
+RUN apt update -y
 RUN apt get install apache2 -y
 RUN service apache2 start
 MAINTAINER Pooja Choudhary<er.poojach@gmail.com>
@@ -25,6 +25,10 @@ COPY index.html /var/www/html/index.html
 
 
 ##we have created Dockerfile.  Now we need to execute the Dockerfile by creating custom image.
+##docker build -t marioimage .   
+# build - to execute the Dockerfile
+# -t tag
+# marioimage  custom image name
+#.  Dockerfile present in current directory
+## this command will build the dockerfile in current directory (.) and tag with the name marioimage
 
-MAINTAINER pooja<er.poojach@gmail.com>
-COPY file1.txt /tmp/file1.txt
