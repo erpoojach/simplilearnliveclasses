@@ -17,7 +17,7 @@
 ## one directory have one docker file with name Dockerfile  (D capital)
 FROM ubuntu
 RUN apt update -y
-RUN apt get install apache2 -y
+RUN apt-get install apache2 -y
 RUN service apache2 start
 MAINTAINER Pooja Choudhary<er.poojach@gmail.com>
 COPY index.html /var/www/html/index.html
