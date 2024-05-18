@@ -1,0 +1,20 @@
+#####Docker Push & Pull
+# create an account on https://hub.docker.com/ 
+
+docker run -it --name simplilearnlabs ubuntu /bin/bash
+docker ps -a
+docker commit simplilearnlabs simplilearnimage
+docker login
+docker images
+docker push simplilearnimage
+docker tag simplilearnimage erpoojach/simplilearnimage
+docker images
+docker push erpoojach/simplilearnimage
+###############On another server#####################
+yum install docker -y
+service docker start
+docker login
+docker pull erpoojach/simplilearnimage:latest
+docker images
+docker run -it --name c01 erpoojach/simplilearnimage /bin/bash
+#inside container do ls to see content/files
