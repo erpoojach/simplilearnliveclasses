@@ -1,0 +1,40 @@
+#Steps
+# if a container gets deleted then content of container will not be deleted if its mapped with docker volume.
+# 1. Create a docker volume inside the Machine.
+# 2. We will create a container with a directory mapped with that docker volume.
+# 3. We will enter inside container & we will create some files in that specific directory.
+# 4. Now we will come out of the container & we will inspect the docker volume to identify location where docker vol is present.
+# 5. When you go the docker vol you will see the same files you xreate in step 3.
+
+#create a volume with name my_vol
+docker volume create my_vol
+
+#list all volumes
+docker volume ls
+
+#create a container with name webapp1 and inside that container there is con_vol directory would be created which is mounted with my_vol ( which is present in machine)
+# one extra space is not allowed gives an error
+docker run -it --name=webapp1 --mount source=my_vol,destination=/con_vol ubuntu /bin/bash
+
+# go inside container & create files & then exit.
+  cd con_vol/
+  touch file1 file2 file3 file4
+  ls
+# After exiting from container remove container
+  docker rm webapp1
+# inspect container will display doker volume's details 
+  docker inspect my_vol
+
+# output of docker inspect my_vol 
+##        "CreatedAt": "2024-05-18T14:03:13Z",
+##        "Driver": "local",
+##        "Labels": null,
+##        "Mountpoint": "/var/lib/docker/volumes/my_vol/_data",
+##        "Name": "my_vol",
+##        "Options": null,
+##        "Scope": "local"
+
+# Can we mount a docker volume on an existing container?
+## No, volume has to be created before container.
+
+https://docs.google.com/document/d/1kxiWjFnLWTDYWCGXSAHoPuh25VAd9f_n/edit 
