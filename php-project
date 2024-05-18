@@ -1,0 +1,30 @@
+Jenkins will create docker file & deploy container
+
+## Step 1 - Fork repo  - https://github.com/erpoojach/php-project 
+## In simpli lab sudo su 
+## open jenkins on port 8080   - http://localhost:8080/   as it is already installed in machine
+## create new item in jenkins named php-project-pipeline, also select itemtype as pipeline
+## goto github repository which is forked above
+
+##got to jenkins and add dockerhub login credentials in Manage Jenkins > Credentials > Add Credentials (ID should be same as mentioned in jenkins configuration file in this case - dockerhub-pwd)
+
+##Dashboard >Credentials > System > Global credentials (unrestricted)
+
+## then in jenkins click on dashboard & then php pipeline. Url will be - http://localhost:8080/job/php-project-pipeline/
+##When we are building project, permission denied error is coming
+##docker build -t erpoojach/myprojectnew:v1 .
+##ERROR: permission denied while trying to connect to the Docker daemon socket at 
+##unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/_ping": dial unix /var/run/docker.sock: connect: permission denied
+
+root@ip-172-31-70-149:/home/erpoojachgmail# sudo su
+root@ip-172-31-70-149:/home/erpoojachgmail# usermod -aG docker jenkins
+root@ip-172-31-70-149:/home/erpoojachgmail# service jenkins restart
+root@ip-172-31-70-149:/home/erpoojachgmail# visudo
+###### User privilege specification
+##root    ALL=(ALL:ALL) ALL
+###jenkins ALL=(ALL:ALL) NOPASSWD: ALL
+
+### add above line below root in /etc/sudoers file which is open by visudo.
+
+
+
