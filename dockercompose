@@ -1,0 +1,38 @@
+### https://drive.google.com/file/d/1YW1OpRPGUsh27brU8ixZKzraOmiccZsU/view
+
+apt install docker-compose -y
+git clone https://github.com/akshu20791/docker-compose-lab
+ls
+cd docker-compose-lab/
+ls
+
+#Build Docker-Compose
+##Once the docker-compose is set up, your client/server application need to be built. This step corresponds to the ‘docker build’ command but applied to the different services.
+docker-compose build
+  
+# Lists images.
+docker-compose images
+
+#. Run Docker-Compose
+## Your docker-compose is built! Now it’s time to start! This step corresponds to the ‘docker run’ command but applied to the different services.
+docker-compose up 
+  
+## run application on localhost:1234
+# Stops containers and removes containers, images... created by ‘docker-compose up’.
+docker-compose down
+
+# Displays log output from services (example: ‘docker-compose logs -f client’).
+# docker-compose logs -f [service name]
+docker-compose logs -f server
+docker-compose logs -f client
+
+# Lists containers.
+docker-compose ps
+
+# Executes command in a running container (example: ‘docker-compose exec server ls’).
+## docker-compose exec [service name] [command]
+
+
+
+
+  
