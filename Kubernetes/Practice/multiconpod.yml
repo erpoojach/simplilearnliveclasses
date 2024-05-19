@@ -1,0 +1,13 @@
+kind: Pod
+apiVersion: v1
+metadata:
+ name: multipod
+spec:
+ containers:
+  - name: mcp1
+    image: httpd
+    ports:
+    - containerPort: 80
+  - name: mcp2
+    image: ubuntu
+    command: ["/bin/bash", "-c","while true; do echo hello world; sleep 300; done"]

@@ -1,0 +1,95 @@
+https://github.com/erpoojach/Deployment-script/blob/main/readme-k8s
+
+kubeadm token create --print-join-command
+
+kubeadm join 172.31.39.54:6443 --cri-socket unix:///var/run/cri-dockerd.sock --token mj1xpx.sh6mlu2hzw0m3nsh --discovery-token-ca-cert-hash sha256:abc2bcfbc0f65a130c1f5d6f943c094ba359c56cf0c93bddfd62a4fdd8fac933 
+
+root@ip-172-31-39-54:/home/ubuntu# kubectl get nodes
+#NAME               STATUS   ROLES           AGE    VERSION
+#ip-172-31-39-54    Ready    control-plane   8m1s   v1.29.5
+#ip-172-31-40-107   Ready    <none>          89s    v1.29.5
+#ip-172-31-46-226   Ready    <none>          108s   v1.29.5
+
+
+## open file in master machine
+root@ip-172-31-39-54:/home/ubuntu# vi myfirstpod.yml   
+# vi myfirstpod.yml called maifest
+# yml stands for yet aint markup language
+
+#in myfirstpod.yml
+
+kind: Pod    				#we are creating the pods
+apiVersion: v1  			#it is k8s version to define the kind. The api version remains fixed.
+metadata:					#the details about the pod
+  name: myfirstpod			#the pod is getting created with the name myfirstpod
+spec:						#what is the specification of pod
+  containers:				#pod consists of the containers
+    - name: c00				#the name of container is c00
+      image: httpd			#base image of the container is httpd(apache)
+      ports:
+        -containerPort: 80 	#the application running inside the container would be running on port 80
+		
+root@ip-172-31-39-54:/home/ubuntu# vi myfirstpod.yml
+root@ip-172-31-39-54:/home/ubuntu# kubectl apply -f myfirstpod.yml 
+#pod/myfirstpod created
+#below command gives the list of pods
+
+root@ip-172-31-39-54:/home/ubuntu# kubectl get pods
+##NAME         READY   STATUS    RESTARTS   AGE
+##myfirstpod   1/1     Running   0          11s
+###myfirstpod - name of pod
+###1/1 - containers running/containers we want to create
+###Running - pod is running
+###RESTARTS 0 - how many times the container inside the pod is restarted.
+###Age 11s - how old the pod is.
+
+root@ip-172-31-39-54:/home/ubuntu# kubectl get pods -o wide
+##NAME         READY   STATUS    RESTARTS   AGE     IP             NODE               NOMINATED NODE   READINESS GATES
+##myfirstpod   1/1     Running   0          3m59s   192.168.26.1   ip-172-31-40-107   <none>           <none>
+
+root@ip-172-31-39-54:/home/ubuntu# curl http://192.168.26.1
+## output - <html><body><h1>It works!</h1></body></html>
+
+root@ip-172-31-39-54:/home/ubuntu# vi multoconpod.yml
+
+kind: Pod
+apiVersion: v1
+metadata:
+ name: multipod
+spec:
+ containers:
+  - name: mcp1
+    image: httpd
+    ports:
+    - containerPort: 80
+  - name: mcp2
+    image: ubuntu
+    command: ["/bin/bash", "-c","while true; do echo hello world; sleep 300; done"]
+	
+## "/bin/bash"   under bash terminal
+## "-c"   command
+## "while true; do echo hello world; sleep 300; done"    - in the ubuntu container we will have helloworld getting printed every 300 sec and this process will keep running until the pod dies.
+
+
+root@ip-172-31-39-54:/home/ubuntu# kubectl get pods -o wide
+##NAME         READY   STATUS    RESTARTS   AGE     IP               NODE               NOMINATED NODE   READINESS GATES
+##multipod     2/2     Running   0          3m27s   192.168.107.65   ip-172-31-46-226   <none>           <none>
+##myfirstpod   1/1     Running   0          23m     192.168.26.1     ip-172-31-40-107   <none>           <none>
+
+root@ip-172-31-39-54:/home/ubuntu# kubectl logs -f -c mcp2  multipod
+hello world
+hello world
+
+###if we need to see logs of containermcp2
+
+root@ip-172-31-39-54:/home/ubuntu# kubectl label pod multipod name=pooja team=testing
+#pod/multipod labeled
+root@ip-172-31-39-54:/home/ubuntu# kubectl get pods --show-labels 
+#NAME         READY   STATUS             RESTARTS      AGE   LABELS
+#labelpod     1/1     Running            0             98s   company=Q3,name=pooja,team=prod
+#multipod     2/2     Running            0             26m   name=pooja,team=testing
+#multipod1    2/3     CrashLoopBackOff   7 (94s ago)   12m   <none>
+#myfirstpod   1/1     Running            0             46m   <none>
+root@ip-172-31-39-54:/home/ubuntu# kubectl get pods -l team=prod
+#NAME       READY   STATUS    RESTARTS   AGE
+#labelpod   1/1     Running   0          2m8s
